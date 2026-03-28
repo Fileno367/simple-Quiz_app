@@ -1,59 +1,63 @@
 <?php 
+
+session_start();
 require_once '../config/database.php';
 require_once '../includes/functions.php';
 
-if (!isset($_SESSION['user_id'])) {
+if (!isLoggedIn()) {
     redirect('../student/login.php');
 }
 
 $user_id = $_SESSION['user_id'];
+$username = $_SESSION['username'] ?? 'Student';
 
-// Get total quizzes taken and average score
-$stmt = $pdo->prepare("SELECT COUNT(*) as total, AVG(score) as avg_score 
+// Fetch total quizzes taken and average score
+$stmt = $pdo->prepare("SELECT COUNT(*) as total_quizzes, AVG(score) as avg_score 
                        FROM quiz_results WHERE user_id = ?");
 $stmt->execute([$user_id]);
 $stats = $stmt->fetch();
 ?>
 <?php include '../includes/header.php'; ?>
 
-<div class="tail-container px-6 py-10">
-    <h1 class="text-4xl font-bold mb-2">Welcome back, <?= htmlspecialchars($_SESSION['full_name'] ?? $_SESSION['username']) ?>!</h1>
-    <p class="text-gray-600 dark:text-gray-400 mb-10">Ready to test your knowledge today?</p>
+<h2>Welcome, <?= htmlspecialchars($username) ?>!</h2>
+<p style="margin-bottom:30px;">Ready to test your knowledge?</p>
 
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <!-- Stats Cards -->
-        <div class="bg-white dark:bg-gray-800 p-8 rounded-3xl shadow">
-            <div class="text-5xl font-bold text-indigo-600"><?= $stats['total'] ?? 0 ?></div>
-            <div class="text-gray-500 mt-2">Quizzes Taken</div>
-        </div>
-        <div class="bg-white dark:bg-gray-800 p-8 rounded-3xl shadow">
-            <div class="text-5xl font-bold text-indigo-600">
-                <?= $stats['avg_score'] ? round($stats['avg_score'], 1) : '0' ?>%
-            </div>
-            <div class="text-gray-500 mt-2">Average Score</div>
-        </div>
-        <div class="bg-white dark:bg-gray-800 p-8 rounded-3xl shadow flex items-center justify-center">
-            <a href="categories.php" 
-               class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-10 py-4 rounded-2xl text-lg transition">
-                Start New Quiz →
-            </a>
-        </div>
-    </div>
-
-    <!-- Quick Links -->
-    <div class="mt-12">
-        <h2 class="text-2xl font-semibold mb-6">Quick Actions</h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <a href="categories.php" class="block p-8 bg-white dark:bg-gray-800 rounded-3xl shadow hover:shadow-lg transition">
-                <h3 class="font-semibold text-xl mb-2">Browse Subjects</h3>
-                <p class="text-gray-500">Choose from Mathematics, Science, History and more</p>
-            </a>
-            <a href="history.php" class="block p-8 bg-white dark:bg-gray-800 rounded-3xl shadow hover:shadow-lg transition">
-                <h3 class="font-semibold text-xl mb-2">View Past Results</h3>
-                <p class="text-gray-500">Review your previous quiz performance</p>
-            </a>
-        </div>
-    </div>
+<div class="card">
+    <h3>Your Progress</h3>
+    <p><strong>Total Quizzes Taken:</strong> <?= $stats['total_quizzes'] ?? 0 ?></p>
+    <p><strong>Average Score:</strong> <?= $stats['avg_score'] ? round($stats['avg_score'], 1) . '%' : 'No quizzes yet' ?></p>
 </div>
+
+<div class="card" style="margin-top:20px;">
+    <h3>Available Subjects</h3>
+    <p style="margin-bottom:20px;">Choose a subject to start a quiz:</p>
+    
+    <?php
+    $stmt = $pdo->query("SELECT * FROM categories ORDER BY name");
+    $categories = $stmt->fetchAll();
+    
+    if (empty($categories)) {
+        echo "<p>No subjects available yet. Ask your admin to add some categories and questions.</p>";
+    } else {
+        echo '<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 15px;">';
+        foreach ($categories as $cat) {
+            echo '
+            <div style="border:1px solid #ddd; padding:20px; border-radius:8px;">
+                <h4>' . htmlspecialchars($cat['name']) . '</h4>
+                <p style="color:#666; font-size:14px;">' . htmlspecialchars($cat['description'] ?? '') . '</p>
+                <a href="quiz.php?category_id=' . $cat['id'] . '" 
+                   class="btn btn-primary" style="margin-top:15px; display:inline-block;">
+                    Start Quiz
+                </a>
+            </div>';
+        }
+        echo '</div>';
+    }
+    ?>
+</div>
+
+<p style="margin-top:30px;">
+    <a href="../logout.php" class="btn btn-danger">Logout</a>
+</p>
 
 <?php include '../includes/footer.php'; ?>

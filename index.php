@@ -1,41 +1,56 @@
 <?php 
+// index.php
 require_once 'config/database.php';
 require_once 'includes/functions.php';
 ?>
 <?php include 'includes/header.php'; ?>
 
-<div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-600 to-indigo-700">
-    <div class="tail-container px-6 py-12">
-        <div class="max-w-2xl mx-auto text-center text-white">
-            <h1 class="text-6xl font-bold mb-6">EduQuiz</h1>
-            <p class="text-2xl mb-10">Learn Smarter • Test Better • Improve Faster</p>
+<div style="min-height: 90vh; display: flex; align-items: center; justify-content: center; 
+            background: linear-gradient(to right, #007bff, #0056b3); color: white;">
+    
+    <div class="container" style="text-align: center; padding: 40px 20px;">
+        <h1 style="font-size: 58px; font-weight: bold; margin-bottom: 20px;">EduQuiz</h1>
+        <p style="font-size: 24px; margin-bottom: 50px; max-width: 700px; margin-left: auto; margin-right: auto;">
+            Learn Smarter • Test Better • Improve Faster
+        </p>
+        
+        <div style="display: flex; flex-wrap: wrap; gap: 30px; justify-content: center;">
             
-            <div class="flex flex-col sm:flex-row gap-6 justify-center">
-                <!-- Student Section -->
-                <div class="bg-white/10 backdrop-blur-lg p-8 rounded-3xl border border-white/20 w-full sm:w-80">
-                    <h2 class="text-2xl font-semibold mb-6">I am a Student</h2>
-                    <a href="student/login.php" 
-                       class="block w-full bg-white text-indigo-700 font-semibold py-4 rounded-2xl hover:bg-gray-100 transition">
-                        Student Login
-                    </a>
-                    <a href="student/register.php" 
-                       class="block w-full mt-4 border border-white/70 text-white font-medium py-4 rounded-2xl hover:bg-white/10 transition">
-                        Create New Account
-                    </a>
-                </div>
-
-                <!-- Admin Section -->
-                <div class="bg-white/10 backdrop-blur-lg p-8 rounded-3xl border border-white/20 w-full sm:w-80">
-                    <h2 class="text-2xl font-semibold mb-6">Admin Portal</h2>
-                    <a href="admin/login.php" 
-                       class="block w-full bg-gray text-indigo-700 font-semibold py-4 rounded-2xl hover:bg-gray-100 transition">
-                        Admin Login
-                    </a>
-                </div>
+            <!-- Student Section -->
+            <div style="background: rgba(255,255,255,0.15); backdrop-filter: blur(10px); 
+                        padding: 40px; border-radius: 12px; width: 320px; border: 1px solid rgba(255,255,255,0.3);">
+                <h2 style="font-size: 26px; margin-bottom: 25px;">I am a Student</h2>
+                
+                <a href="student/login.php" 
+                   class="btn btn-primary" 
+                   style="width: 100%; display: block; margin-bottom: 15px; padding: 16px; font-size: 18px;">
+                    Student Login
+                </a>
+                
+                <a href="student/register.php" 
+                   class="btn" 
+                   style="width: 100%; display: block; background: transparent; border: 2px solid white; color: white; padding: 16px; font-size: 18px;">
+                    Create New Account
+                </a>
             </div>
 
-            <p class="mt-12 text-sm opacity-75">Built for students • Powered by PHP &amp; MySQL</p>
+            <!-- Admin Section -->
+            <div style="background: rgba(255,255,255,0.15); backdrop-filter: blur(10px); 
+                        padding: 40px; border-radius: 12px; width: 320px; border: 1px solid rgba(255,255,255,0.3);">
+                <h2 style="font-size: 26px; margin-bottom: 25px;">Admin Portal</h2>
+                
+                <a href="admin/login.php" 
+                   class="btn btn-primary" 
+                   style="width: 100%; display: block; padding: 16px; font-size: 18px;">
+                    Admin Login
+                </a>
+            </div>
+            
         </div>
+
+        <p style="margin-top: 60px; opacity: 0.85; font-size: 15px;">
+            Built for students • Powered by PHP &amp; MySQL
+        </p>
     </div>
 </div>
 

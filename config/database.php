@@ -3,8 +3,8 @@
 
 $host = 'localhost';
 $db   = 'edquiz';
-$user = 'root';           // change if needed
-$pass = '';               // change if needed
+$user = 'root';           // Change if you have set a password
+$pass = '';               // Put your MySQL password here if any
 $charset = 'utf8mb4';
 
 $dsn = "mysql:host=$host;dbname=$db;charset=$charset";
@@ -18,6 +18,7 @@ $options = [
 try {
     $pdo = new PDO($dsn, $user, $pass, $options);
 } catch (\PDOException $e) {
-    die("Database connection failed: " . $e->getMessage());
+    // Show clear error during development
+    die("❌ Database connection failed: " . $e->getMessage());
 }
 ?>
