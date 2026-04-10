@@ -24,9 +24,23 @@ if (isset($_GET['delete'])) {
     $id = (int)$_GET['delete'];
     $stmt = $pdo->prepare("DELETE FROM categories WHERE id = ?");
     $stmt->execute([$id]);
-    $success = "Category deleted!";
+    
+    // Optional: also delete related questions
+    $stmt = $pdo->prepare("DELETE FROM questions WHERE category_id = ?");
+    $stmt->execute([$id]);
+    
+    $success = "Category and related questions deleted!";
+    
+    // Redirect to clean URL (prevents refresh re-deleting)
+    header("Location: categories.php?success=1");
+    exit();
+}
+
+if (isset($_GET['success'])) {
+    $success = "Category deleted successfully!";
 }
 ?>
+
 <?php include '../includes/header.php'; ?>
 
 <h2>Manage Categories (Subjects)</h2>

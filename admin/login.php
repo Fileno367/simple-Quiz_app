@@ -1,5 +1,7 @@
 <?php 
-// admin/login.php
+
+session_start();
+
 require_once '../config/database.php';
 require_once '../includes/functions.php';
 
@@ -16,12 +18,13 @@ if (isset($_POST['login'])) {
     if ($admin && password_verify($password, $admin['password'])) {
         $_SESSION['admin_id']   = $admin['id'];
         $_SESSION['admin_user'] = $admin['username'];
-        
+
         redirect('dashboard.php');
     } else {
         $error = "Invalid admin credentials!";
     }
 }
+
 ?>
 <?php include '../includes/header.php'; ?>
 
